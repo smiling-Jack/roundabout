@@ -1178,6 +1178,68 @@
 			
 			return (data.childInFocus > -1) ? data.childInFocus : false;
 		},
+
+
+		// compareVersions
+		// compares a given version string with another
+		compareVersions: function(baseVersion, compareVersion) {
+			var i,
+			    base = baseVersion.split(/\./i),
+			    compare = compareVersion.split(/\./i),
+			    maxVersionSegmentLength = (base.length > compare.length) ? base.length : compare.length;
+
+			for (i = 0; i <= maxVersionSegmentLength; i++) {
+				if (base[i] && !compare[i] && parseInt(base[i], 10) !== 0) {
+					// base is higher
+					return 1;
+				} else if (compare[i] && !base[i] && parseInt(compare[i], 10) !== 0) {
+					// compare is higher
+					return -1;
+				} else if (base[i] === compare[i]) {
+					// these are the same, next
+					continue;
+				}
+
+				if (base[i] && compare[i]) {
+					if (parseInt(base[i], 10) > parseInt(compare[i], 10)) {
+						// base is higher
+						return 1;
+					} else {
+						// compare is higher
+						return -1;
+					}
+				}
+			}
+
+			// nothing was triggered, versions are the same
+			return 0;
+		},
+                        
+                //TODO Check for memory leaks
+                destroy: function() {
+                    return this.each(function() {
+                        var $this = $(this),
+                            settings = $this.data('roundabout');
+                            
+                        if (settings) {
+                            $this.unbind(".roundabout")
+                                .removeClass("roundabout-holder")
+                                .removeData("roundabout");
+                            
+                            var $children = $this.children(settings.childSelector);
+                            $children.unbind(".roundabout").each(function(){
+                                var $child = $(this);
+                                if ($child.data("roundabout")) {
+                                    $child.width($child.data("roundabout").startWidth)
+                                        .height($child.data("roundabout").startHeight)
+                                        .css('font-size', $child.data("roundabout").startFontSize)
+                                        .removeData("roundabout");
+                                }
+                            }).removeClass("roundabout-moveable-item roundabout-in-focus")
+                                .css({position: ''});
+                        }
+                    });
+                }
 	};
 
 
