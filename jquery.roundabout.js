@@ -41,6 +41,8 @@
 (function($) {
 	"use strict";
 	var defaults, internalData, methods;
+	var backchild ="";
+	var frontchild ="";
 
 
 	// compareVersions
@@ -561,6 +563,37 @@
 			
 			// callback
 			callback.apply(self);
+			
+			var posi = parseFloat([(360.0 - data.degrees) + info.bearing]);
+			if (posi > 360) {
+				posi = posi - 360;
+			};
+
+			if (posi < 183 && posi > 177) {
+				backchild = child.attr("id");
+			};
+			if (posi > 183 && child.attr("id") == backchild) {
+				backchild = "";
+				child.trigger("backright");
+			};
+			if (posi < 177 && child.attr("id") == backchild) {
+				backchild = "";
+				child.trigger("backleft");
+			};
+
+			if (posi < 3 || posi > 357) {
+				frontchild = child.attr("id");
+			};
+
+			if (posi > 3 && posi < 180 && child.attr("id") == frontchild) {
+				frontchild= "";
+				child.trigger("frontright");
+			};
+
+			if (posi < 357 && posi > 180 && child.attr("id") == frontchild) {
+				frontchild = "";
+				child.trigger("frontleft");
+			};
 
 			return methods.isInFocus.apply(self, [data.degrees]);
 		},
