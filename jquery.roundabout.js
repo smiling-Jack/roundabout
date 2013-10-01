@@ -311,7 +311,7 @@
 									var data = self.data("roundabout"),
 									    delta = (data.dragAxis.toLowerCase() === "x") ? "deltaX" : "deltaY";
 									methods.stopAnimation.apply(self);
-									methods.setBearing.apply(self, [data.dragBearing + properties[delta] / data.dragFactor]);
+									methods.setBearing.apply(self, [data.dragBearing + (properties[delta] / data.dragFactor)*10]);
 								})
 								.drop(function(e) {
 									var data = self.data("roundabout"),
@@ -337,7 +337,7 @@
 									}, false);
 
 									element.addEventListener("touchmove", function(e) {
-										var delta = (e.touches[0][page] - data.touchMoveStartPosition) / data.dragFactor;
+										var delta = ((e.touches[0][page] - data.touchMoveStartPosition) / data.dragFactor)*1;
 										e.preventDefault();
 										methods.stopAnimation.apply($(this));
 										methods.setBearing.apply($(this), [data.dragBearing + delta]);
