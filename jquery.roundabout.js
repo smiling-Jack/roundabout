@@ -41,9 +41,6 @@
 (function($) {
 	"use strict";
 	var defaults, internalData, methods;
-	var backchild ="";
-	var frontchild ="";
-
 
 	// compareVersions
 	// compares a given version string with another
@@ -311,7 +308,7 @@
 									var data = self.data("roundabout"),
 									    delta = (data.dragAxis.toLowerCase() === "x") ? "deltaX" : "deltaY";
 									methods.stopAnimation.apply(self);
-									methods.setBearing.apply(self, [data.dragBearing + (properties[delta] / data.dragFactor)*10]);
+									methods.setBearing.apply(self, [data.dragBearing + (properties[delta] / data.dragFactor)]);
 								})
 								.drop(function(e) {
 									var data = self.data("roundabout"),
@@ -337,7 +334,7 @@
 									}, false);
 
 									element.addEventListener("touchmove", function(e) {
-										var delta = ((e.touches[0][page] - data.touchMoveStartPosition) / data.dragFactor)*1;
+										var delta = ((e.touches[0][page] - data.touchMoveStartPosition) / data.dragFactor);
 										e.preventDefault();
 										methods.stopAnimation.apply($(this));
 										methods.setBearing.apply($(this), [data.dragBearing + delta]);
@@ -564,37 +561,6 @@
 			// callback
 			callback.apply(self);
 			
-			var posi = parseFloat([(360.0 - data.degrees) + info.bearing]);
-			if (posi > 360) {
-				posi = posi - 360;
-			};
-
-			if (posi < 183 && posi > 177) {
-				backchild = child.attr("id");
-			};
-			if (posi > 183 && child.attr("id") == backchild) {
-				backchild = "";
-				child.trigger("backright");
-			};
-			if (posi < 177 && child.attr("id") == backchild) {
-				backchild = "";
-				child.trigger("backleft");
-			};
-
-			if (posi < 3 || posi > 357) {
-				frontchild = child.attr("id");
-			};
-
-			if (posi > 3 && posi < 180 && child.attr("id") == frontchild) {
-				frontchild= "";
-				child.trigger("frontright");
-			};
-
-			if (posi < 357 && posi > 180 && child.attr("id") == frontchild) {
-				frontchild = "";
-				child.trigger("frontleft");
-			};
-
 			return methods.isInFocus.apply(self, [data.degrees]);
 		},
 
