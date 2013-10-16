@@ -483,7 +483,7 @@
 						if (data.triggerBlurEvents) {
 							self.children(data.childSelector)
 								.eq(info.inFocus)
-									.trigger("blur");
+									.trigger("roundBlur");
 						}
 
 						data.childInFocus = inFocus;
@@ -492,7 +492,7 @@
 							// focus new child
 							self.children(data.childSelector)
 								.eq(inFocus)
-									.trigger("focus");
+									.trigger("roundFocus");
 						}
 					}
 
